@@ -10,10 +10,7 @@
                         }
         ?>
 
-<?php
-    $text = $_REQUEST["unfug0"]." ". $_REQUEST["unfug1"]." ". $_REQUEST["unfug2"]."\n";
-    file_put_contents($filename, $text, FILE_APPEND)
-        ?>
+
 
 
 <!DOCTYPEhtml>
@@ -28,11 +25,27 @@
         <?php echo $_GET["begruessung"]; ?>
         <?php echo $_GET["vorname"]; ?>
         <?php echo $_GET["nachname"]; ?><br><br>
-        <?php $MyText = file($filename, FILE_IGNORE_NEW_LINES); 
-        foreach ($MyText as $value)
-        { echo "<p>" . $value . "</p>";}
+        <table class="table-striped table">
+        <th>ID</th>
+        <th>Phrase</th>
+        <?php
+        $link = mysqli_connect("localhost", "root", "", "erstedatenbank");
+        $stmt = "SELECT * FROM `phrases`";
+        $result = $link->query($stmt);
+
+        if ($result->num_rows > 0){
+            while ($row = mysqli_fetch_row($result)){
+            echo "<tr>\n";
+            echo "<td>" . $row[0] . "</td>\n";
+            echo "<td>" . $row[1] . "</td>\n";
+            echo "</tr>";
+            }
+        }
+        else {
+            echo "<tr><td colspan='2'>No data found</td></tr>";
+        }
         ?>
-        
+    </table>
     </body>
 
 </html>
